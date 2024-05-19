@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://c72w53gcdqtl0"]
+
+[node name="SceneName" type="LineEdit"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1089.0
+offset_bottom = -624.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "1"
+caret_blink = true
+caret_blink_interval = 0.5

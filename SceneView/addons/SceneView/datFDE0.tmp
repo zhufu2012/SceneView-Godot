@@ -1,0 +1,10 @@
+{
+  "$id": "1",
+  "lable_name": "root/other",
+  "parent_lable_name": "root",
+  "dict": {},
+  "lable_list": {
+	"$id": "3",
+	"$values": []
+  }
+}

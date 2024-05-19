@@ -1,0 +1,17 @@
+{
+  "$id": "1",
+  "lable_name": "root",
+  "parent_lable_name": "",
+  "dict_name": {
+	"$id": "2",
+	"$values": []
+  },
+  "dict_path": {
+	"$id": "3",
+	"$values": []
+  },
+  "lable_list": {
+	"$id": "4",
+	"$values": []
+  }
+}
