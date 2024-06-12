@@ -51,12 +51,6 @@
 
 该项目适用于Godot Mono 4.1版本、4.2版本
 
-## 
-
-I use Jetbrains Rider to write this game, but any IDE (for example VS code) should do the trick. Code is in the scripts/ folder.
-
-
-
 ## 许可证
 
 MIT
