@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1vh3agcjgwao"]
+
+[ext_resource type="Script" path="res://addons/SceneView/scene/cs.gd" id="1_cggyt"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_top = -2.0
+offset_right = 251.0
+offset_bottom = 228.0
+
+[node name="Tree" type="Tree" parent="."]
+layout_mode = 0
+offset_right = 205.0
+offset_bottom = 230.0
+script = ExtResource("1_cggyt")

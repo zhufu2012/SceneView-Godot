@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cfop35ijkcmr4"]
-
-[ext_resource type="Script" path="res://addons/SceneView/src/SceneTree.cs" id="1_eki6l"]
-
-[node name="SceneTree" type="Tree"]
-script = ExtResource("1_eki6l")
