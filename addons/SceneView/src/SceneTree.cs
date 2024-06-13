@@ -13,17 +13,34 @@ namespace SceneCore_Space
     {
         private PopupMenu popupMenu;//菜单
         public SceneLable labledata;
-        private List<Texture2D> ico_list = new List<Texture2D>();
         private Control MainPanelInstance;//主节目
-
+		//维护json文件
+        SaveLoadData saveLoadData = null;
+		List<Texture2D> ico_list = new List<Texture2D>();
+		
+		public int MAXTIME = 120;//最大保存间隔 120帧
         //保存间隔
         int SaveTime = 0;
-
+		
+		///初始化加载图片
+		public void InitIco()
+		{
+			ico_list.Add(GD.Load<Texture2D>("res://addons/SceneView/img/主场景.png"));
+			ico_list.Add(GD.Load<Texture2D>("res://addons/SceneView/img/标签.png"));
+			ico_list.Add(GD.Load<Texture2D>("res://addons/SceneView/img/场景.png"));
+		}
+		
         public SceneTree()
         { }
-
-        public SceneTree(PopupMenu popupMenu, SceneLable labledata, List<Texture2D> ico_list)
+		
+		
+		
+        public SceneTree(PopupMenu popupMenu)
         {
+			InitIco();
+			saveLoadData = new SaveLoadData();
+			labledata = saveLoadData.GetSceneLabelList();
+			
             Columns = 2;
             AllowSearch = true;
             AllowRmbSelect = true;
@@ -40,9 +57,6 @@ namespace SceneCore_Space
             ItemActivated += SetTreeItemEdited;//双击某一项,设置可编辑
             ItemEdited += OnTreeItemEdited;//编辑后修改，标签名称
             this.popupMenu = popupMenu;
-            this.labledata = labledata;
-            this.ico_list = ico_list;
-
             popupMenu.Hide();//隐藏
             popupMenu.Connect(PopupMenu.SignalName.IdPressed, new Callable(this, MethodName.OnMenu));
             IniData();//初始化数据
@@ -52,12 +66,11 @@ namespace SceneCore_Space
         public override void _PhysicsProcess(double delta)
         {
             SaveTime += 1;
-            if (SaveTime > 120)
+            if (SaveTime > MAXTIME)
             {
                 SaveTime = 0;
                 SaveData();
             }
-
             base._PhysicsProcess(delta);
         }
 
@@ -254,7 +267,7 @@ namespace SceneCore_Space
             }
         }
 
-
+		
         public void SaveData()
         {
             SceneLable Lable = new SceneLable();
@@ -286,12 +299,12 @@ namespace SceneCore_Space
                     Lable.AddScene(treeItem.GetText(0), path);
                 }
             }
+			labledata = Lable;
             SaveLoadData.parent_lable = Lable;
-            labledata = Lable;
-            GD.Print(Lable);
-            GD.Print("\n");
+            saveLoadData.SaveData();//保存数据
         }
-
+		
+		//获取子节点的SceneLable数据
         public SceneLable GetLable(TreeItem item, string name, string pr_name)
         {
             SceneLable lable = new SceneLable(pr_name + "/" + name, true);
@@ -481,7 +494,9 @@ namespace SceneCore_Space
         }
 
 
-
+        /// <summary>
+        /// 双击某一项,设置可编辑///没有用到
+        /// </summary>
         public void SetTreeItemEdited()
         {
             TreeItem treeitem = GetEdited();
@@ -509,6 +524,7 @@ namespace SceneCore_Space
                 }
             }
         }
+		
         /// <summary>
         ///修改标签名称
         /// </summary>
@@ -555,48 +571,19 @@ namespace SceneCore_Space
         {
             //标签名称（真实名称），标签下有哪些场景
             Dictionary<string, Dictionary<string, string>> scene_dict_all = labledata.GetSceneDictAll();//json文件中记录的所有场景
-            //当前项目的所有场景-临时temp_scene_dict_all
-            Dictionary<string, Dictionary<string, string>> temp_scene_dict_all = scene_dict_all.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-            Dictionary<string, string> scene_dict = labledata.GetSceneDictAll2(scene_dict_all);//所有场景
-            //当前项目的所有场景-临时temp_scene_dict
-            Dictionary<string, string> temp_scene_dict = scene_dict.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-            Dictionary<string, string> sceneFiles = GetRenameFiles();       //当前项目的所有场景，所有场景必然不同名,路径也必然不同
+            Dictionary<string, string> scene_dict = labledata.GetSceneDictAll2(scene_dict_all);//统一为一个场景字典,<名称，路径>
+            Dictionary<string, string> sceneFiles = GetRenameFiles();     //当前项目的所有场景，所有场景必然不同名,路径也必然不同
             List<SceneLable> scene_list_all = labledata.GetAllSceneLabel(); //当前文件中保存的所有场景
             SceneLable other_lable = labledata.QueryLable(scene_list_all, "root/other");//其他分类标签
             foreach (var scene in sceneFiles)//遍历项目所有场景-检查是否已有当前场景
             {
-                string name = scene.Key;
-                string path = scene.Value;
-
-                if (scene_dict.ContainsValue(path))
-                {//存在相同路径的场景，就看看场景名称是否相同，相同就不管，不同该数据的场景名称
-                    foreach (KeyValuePair<string, Dictionary<string, string>> scene2 in temp_scene_dict_all)
-                    {
-                        string lable_name = scene2.Key;//
-                        Dictionary<string, string> scene_dict_ps = scene2.Value;
-                        foreach (var ps in scene_dict_ps)
-                        {
-                            string name2 = ps.Key;
-                            string path2 = ps.Value;
-                            if (path.Equals(path2))//路径相同
-                            {
-                                if (!name2.Equals(name))//名称不同就移除原数据
-                                {
-                                    scene_dict_all[lable_name].Remove(name2);
-                                    SceneLable temp_lable = labledata.QueryLable(scene_list_all, lable_name);
-                                    temp_lable.RemoveScene(name2, path2);//移除对应场景
-                                    labledata.Updata2(temp_lable);//更新标签数据
-                                    other_lable.AddScene(name, path);//不存在的场景放othor下
-                                }
-                            }
-                        }
-                    }
+                if (scene_dict.ContainsValue(scene.Value))//检查json中所有场景中，是否已经有了该场景数据，
+                {//存在相同路径（路径相同名称也一定相同）的场景，就不管
+                    
                 }
                 else
                 {
-                    other_lable.AddScene(name, path);//不存在的场景放othor下
+                    other_lable.AddScene(scene.Key, scene.Value);//不存在的场景放othor下
                 }
             }
         }
@@ -635,7 +622,7 @@ namespace SceneCore_Space
             Dictionary<string, string> scene_dict = lable.GetSceneDict();
             List<SceneLable> lable_list = lable.lable_list;
             List<TreeItem> sub_list = new List<TreeItem>();
-            for (int i = 0; i < lable_list.Count; i++)
+            for (int i = 0; i < lable_list.Count; i++)//添加标签节点
             {
                 TreeItem sub_root = CreateItem(parentItem);
                 sub_root.SetEditable(0, true);
@@ -646,7 +633,7 @@ namespace SceneCore_Space
                 sub_root.SetMetadata(1, lable_list[i].lable_name);//标签名称（路径）
                 sub_list.Add(sub_root);
             }
-            foreach (var kvp in scene_dict)
+            foreach (var kvp in scene_dict)//添加场景节点
             {
                 TreeItem sceneItem = CreateItem(parentItem);
                 sceneItem.SetText(0, kvp.Key); // 设置场景节点的文本为场景名称
@@ -655,7 +642,7 @@ namespace SceneCore_Space
                 sceneItem.SetMetadata(0, "scene");
                 sceneItem.SetMetadata(1, kvp.Value);//路径
             }
-            for (int i = 0; i < sub_list.Count; i++)
+            for (int i = 0; i < sub_list.Count; i++)//添加标签节点下数据
             {
                 SetLable(lable_list[i], sub_list[i]);
             }
@@ -664,7 +651,7 @@ namespace SceneCore_Space
 
 
         /// <summary>
-        ///获取重命名后的新文件名 和 路径
+        ///获取项目中所有场景 场景名 和 路径的字典
         /// </summary>
         public static Dictionary<string, string> GetRenameFiles()
         {
