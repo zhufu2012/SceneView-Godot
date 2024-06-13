@@ -1,6 +1,30 @@
 # ProjectTD
 
 该项目是 由Godot的Godot Mono 4.2 开发的纯c#场景管理器插件
+
+注意以下还没实现！！！！！！！！！！！！！！
+我只是先写好要实现的功能，别这段文字不看呀！！！！！！
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 可以用来统一管理各个文件夹中的场景。
 我一直饱受Godot的弱小的场景管理功能的困扰，作为一个以场景为核心的游戏引擎，组织场景的方式居然还是
 文件夹的方式，也就是说，你需要通过创建不同文件夹来分类不同的场景，可这会使得项目变得臃肿，
@@ -28,9 +52,6 @@
 该项目适用于Godot Mono 4.1版本、4.2版本
 
 ## 
-
-I use Jetbrains Rider to write this game, but any IDE (for example VS code) should do the trick. Code is in the scripts/ folder.
-
 
 
 ## 许可证

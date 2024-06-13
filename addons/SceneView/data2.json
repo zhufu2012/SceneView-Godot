@@ -1,7 +1,7 @@
 {
   "$id": "1",
-  "lable_name": "root/other",
-  "parent_lable_name": "root",
+  "lable_name": "root",
+  "parent_lable_name": "",
   "dict_name": {
 	"$id": "2",
 	"$values": []
@@ -15,18 +15,20 @@
 	"$values": [
 	  {
 		"$id": "5",
-		"lable_name": "root/other/测试2",
-		"parent_lable_name": "root/other",
+		"lable_name": "root/other",
+		"parent_lable_name": "root",
 		"dict_name": {
 		  "$id": "6",
 		  "$values": [
-			"ce"
+			"SceneTree.tscn",
+			"SceneView.tscn"
 		  ]
 		},
 		"dict_path": {
 		  "$id": "7",
 		  "$values": [
-			"Key"
+			"D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\SceneTree.tscn",
+			"D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\SceneView.tscn"
 		  ]
 		},
 		"lable_list": {
@@ -36,8 +38,8 @@
 	  },
 	  {
 		"$id": "9",
-		"lable_name": "root/other/测试2",
-		"parent_lable_name": "root/other",
+		"lable_name": "root/未命名标签",
+		"parent_lable_name": "root",
 		"dict_name": {
 		  "$id": "10",
 		  "$values": []

@@ -21,7 +21,7 @@ namespace SceneCore_Space
         //对应标签下，有哪些场景-名称
         [JsonInclude]
         public List<string> dict_name = new List<string>();
-		
+
         //对应标签下，有哪些场景-路径
         [JsonInclude]
         public List<string> dict_path = new List<string>();
@@ -451,12 +451,18 @@ namespace SceneCore_Space
         public override string ToString()
         {
             string lable_list_str = "";
+            string dict_list = "[";
             foreach (var lable in lable_list)
             {
                 lable_list_str += ",\n\t" + lable.ToString();
             }
+            for (int i = 0; i < dict_name.Count; i++)
+            {
+                dict_list += "\n{" + dict_name[i] + "," + dict_path[i] + "},";
+            }
+
             string all = "lable_name:" + lable_name + ",parent_lable_name:" + parent_lable_name +
-                 ",[" + lable_list_str + "]";
+                 ",[" + lable_list_str + "],\n\tscene_list:" + dict_list+"]";
 
             return all;
         }

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text.RegularExpressions;
-
+using System.Xml.Linq;
 
 namespace SceneCore_Space
 {
@@ -14,12 +15,16 @@ namespace SceneCore_Space
         public SceneLable labledata;
         private List<Texture2D> ico_list = new List<Texture2D>();
         private Control MainPanelInstance;//主节目
+
+        //保存间隔
+        int SaveTime = 0;
+
         public SceneTree()
         { }
 
         public SceneTree(PopupMenu popupMenu, SceneLable labledata, List<Texture2D> ico_list)
         {
-            Columns = 3;
+            Columns = 2;
             AllowSearch = true;
             AllowRmbSelect = true;
             EnableRecursiveFolding = true;
@@ -33,7 +38,7 @@ namespace SceneCore_Space
 
             Connect(Tree.SignalName.ItemMouseSelected, new Callable(this, MethodName.MouseItemSelected));
             ItemActivated += SetTreeItemEdited;//双击某一项,设置可编辑
-			ItemEdited += OnTreeItemEdited;//编辑后修改，标签名称
+            ItemEdited += OnTreeItemEdited;//编辑后修改，标签名称
             this.popupMenu = popupMenu;
             this.labledata = labledata;
             this.ico_list = ico_list;
@@ -44,14 +49,15 @@ namespace SceneCore_Space
             IniView(false);//初始化树
         }
 
-        public override void _Ready()
-        {
-            base._Ready();
-        }
-
         public override void _PhysicsProcess(double delta)
         {
-            //GD.Print(1);
+            SaveTime += 1;
+            if (SaveTime > 120)
+            {
+                SaveTime = 0;
+                SaveData();
+            }
+
             base._PhysicsProcess(delta);
         }
 
@@ -83,7 +89,7 @@ namespace SceneCore_Space
                 List<TreeItem> list = GetItems(item);//拖动对象子节点列表
                 if (list.Count > 0)//有子节点 祝福注释-暂时
                 {
-					Button button = new Button();
+                    Button button = new Button();
                     button.Text = item.GetText(0);
                     con.AddChild(button);
                 }
@@ -122,51 +128,58 @@ namespace SceneCore_Space
         {
             //获取目标拖放位置，-1,0,1分别代表在某项之前、之上和之后
             int target_pos = GetDropSectionAtPosition(atPosition);
-            TreeItem target_itm = GetItemAtPosition(atPosition);//目标
             TreeItem treeitem = (TreeItem)data.AsGodotObject();//拖动对象
-            DropModeFlags = 1 | 2;
-            //是否为同级
-            bool IsParent = treeitem.GetParent().Equals(target_itm.GetParent());
-            if (treeitem != null)//拖动对象
+            TreeItem target_itm = GetItemAtPosition(atPosition);//拖动到的目标
+            if (target_itm != null)
             {
-                string type = (string)treeitem.GetMetadata(0);
-                string value = (string)treeitem.GetMetadata(1);
-                string target_type = (string)treeitem.GetMetadata(0);
-                string target_value = (string)treeitem.GetMetadata(1);
-                if (!value.Equals("root") && !value.Equals("root/other"))
-                {//拖动对象不能是root和root/other
-                    if (target_value.Equals("root") && (target_pos == -1 || target_pos == 1))
-                    {//目标是root，不能拖动到root上和root下
-                        return false;
-                    }
-                    if (target_value.Equals("root/other") && target_pos == -1)
-                    {//标签和场景都不能拖到other前
-                        return false;
-                    }
-                    if (target_type.Equals("lable") && target_value.Equals("root/other") && target_pos == 0)
-                    {//标签不能到other中
-                        return false;
-                    }
-                    if (type.Equals("lable") && target_type.Equals("scene") && target_pos == 0)
-                    {//.标签可以拖动，不能拖到场景中
-                        return false;
-                    }
-                    if (type.Equals("scene") && target_type.Equals("lable") && target_pos == -1)
-                    {//场景不能放在标签前面
-                        return false;
-                    }
-                    if (type.Equals("scene") && target_type.Equals("scene") && target_pos == 0)
-                    {//场景不能放在场景前面
-                        return false;
-                    }
-                    List<TreeItem> list = GetItems(treeitem);//拖动对象子节点
-                    if (!list.Contains(target_itm))//目标如果不是其子节点
-                    {//目标不是其子节点，能拖动
-                        if (target_itm != treeitem)//拖动对象不是目标
-                        {
-                            return true;
+                DropModeFlags = 1 | 2;
+                //是否为同级
+                //bool IsParent = treeitem.GetParent().Equals(target_itm.GetParent());
+                if (treeitem != null)//拖动对象
+                {
+                    string type = (string)treeitem.GetMetadata(0);
+                    string value = (string)treeitem.GetMetadata(1);
+                    string target_type = (string)target_itm.GetMetadata(0);//目标类型
+                    string target_value = (string)target_itm.GetMetadata(1);//目标的值
+                    if (!value.Equals("root") && !value.Equals("root/other"))
+                    {//拖动对象不能是root和root/other
+                        if (target_value.Equals("root") && (target_pos == -1 || target_pos == 1))
+                        {//目标是root，不能拖动到root上和root下
+                            return false;
                         }
-                        return false;
+                        if (target_value.Equals("root/other") && target_pos == -1)
+                        {//标签和场景都不能拖到other前
+                            return false;
+                        }
+                        if (target_type.Equals("lable") && target_value.Equals("root/other") && target_pos == 0)
+                        {//标签不能到other中
+                            return false;
+                        }
+                        if (type.Equals("lable") && target_type.Equals("scene") && target_pos == 0)
+                        {//.标签可以拖动，不能拖到场景中间
+                            return false;
+                        }
+                        if (type.Equals("scene") && target_type.Equals("lable") && target_pos == -1)
+                        {//场景不能放在标签前面
+                            return false;
+                        }
+                        if (type.Equals("scene") && target_type.Equals("scene") && target_pos == 0)
+                        {//场景不能放在场景中间
+                            return false;
+                        }
+                        List<TreeItem> list = GetItems(treeitem);//拖动对象子节点
+                        if (!list.Contains(target_itm))//目标如果不是其子节点
+                        {//目标不是其子节点，能拖动
+                            if (target_itm != treeitem)//拖动对象不是目标
+                            {
+                                return true;
+                            }
+                            return false;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                     else
                     {
@@ -177,11 +190,9 @@ namespace SceneCore_Space
                 {
                     return false;
                 }
+
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public override void _DropData(Vector2 atPosition, Variant data)
@@ -192,24 +203,9 @@ namespace SceneCore_Space
             TreeItem treeitem = (TreeItem)data.AsGodotObject();//拖动对象
             TreeItem target_itm = GetItemAtPosition(atPosition);//目标
 
-            List<SceneLable> list = labledata.GetAllSceneLabel();
-
             string type = (string)treeitem.GetMetadata(0);//拖动对象
-            string value = (string)treeitem.GetMetadata(1);//拖动对象
 
             string target_type = (string)target_itm.GetMetadata(0);//目标
-            string target_value = (string)target_itm.GetMetadata(1);//目标
-
-            SceneLable target_itm_lable = labledata.QueryLable2(list, target_itm);//对象
-            SceneLable treeitem_lable = null;//拖动
-            if (target_type != "scene")////这里拖动对象是场景的情况下，不是同级节点---祝福注释-这里有问题
-            {
-                treeitem_lable = labledata.QueryLable2(list, treeitem);
-            }
-            else
-            {
-                treeitem_lable = labledata;
-            }
             //是否为同级
             bool IsParent = treeitem.GetParent().Equals(target_itm.GetParent());
 
@@ -225,17 +221,14 @@ namespace SceneCore_Space
                         if (IsParent)//是同级节点
                         {//将这个 TreeItem 移动至给定的 item 之前
                             treeitem.MoveBefore(target_itm);
-                            treeitem_lable.MoveBeforeScene((string)target_itm.GetMetadata(1));
+
                         }
                         else//不是同级节点
                         {
                             treeitem.GetParent().RemoveChild(treeitem);//从父节点去除
-
-                            SceneLable ParentLable = treeitem_lable.ParentLable(list);
                             //ParentLable.RemoveScene();
                             target_itm.GetParent().AddChild(treeitem);//在目标的父节点上加个子节点
                             treeitem.MoveBefore(target_itm);//移动该节点到目标前面
-                            treeitem_lable.MoveBeforeScene((string)target_itm.GetMetadata(1));
                         }
                         break;
                     case 0://目标下
@@ -259,48 +252,69 @@ namespace SceneCore_Space
                         break;
                 }
             }
-
-            /*if target_itm in get_items(data[0]):
-		return # 禁止移动
-	match target_pos:
-            -1: # 拖放到了某个 TreeItem 之前
-			# 根据是否同级进行区别处理
-			if data[0].get_parent() == target_itm.get_parent(): # 如果同级
-				data[0].move_before(target_itm)
-
-            else:
-				data[0].get_parent().remove_child(data[0])         # 先从原来的父节点删除
-				target_itm.add_child(data[0])                      # 添加到目标位置的TreeItem
-				data[0].move_before(target_itm)
-
-
-        0:  # 拖放到了某个TreeItem上
-			data[0].get_parent().remove_child(data[0])         # 先从原来的父节点删除
-			target_itm.add_child(data[0])                      # 添加到目标位置的TreeItem
-		1: # 拖放到了某个TreeItem之后
-			# 根据是否同级进行区别处理
-			if data[0].get_parent() == target_itm.get_parent(): # 如果同级
-				data[0].move_after(target_itm)
-
-            else:
-				data[0].get_parent().remove_child(data[0])         # 先从原来的父节点删除
-				target_itm.add_child(data[0])                      # 添加到目标位置的TreeItem
-				data[0].move_after(target_itm)
-
-# 返回某个TreeItem下所有子孙节点的集合
-func get_items(item:TreeItem) -> Array[TreeItem]:
-	var arr:Array[TreeItem]
-
-    if item.get_child_count() > 0:
-		arr.append_array(item.get_children())
-
-        for chd in item.get_children():
-
-            arr.append_array(get_items(chd))
-
-    return arr*/
-
         }
+
+
+        public void SaveData()
+        {
+            SceneLable Lable = new SceneLable();
+            TreeItem root = GetRoot();
+            Godot.Collections.Array<TreeItem> array = root.GetChildren();
+            for (int i = 0; i < array.Count; i++)
+            {
+                TreeItem treeItem = array[i];//root下的子节点
+                string type = (string)treeItem.GetMetadata(0);
+                string path = (string)treeItem.GetMetadata(1);
+                if (type.Equals("lable") && path.Equals("root/other"))//other标签下
+                {
+                    SceneLable LableOther = new SceneLable("root/other",true);//other标签
+                    LableOther.parent_lable_name = "root";
+                    for (int j = 0; j < treeItem.GetChildCount(); j++)
+                    {
+                        TreeItem treeItem2 = treeItem.GetChild(j);
+                        LableOther.AddScene(treeItem2.GetText(0), (string)treeItem2.GetMetadata(1));
+                    }
+                    Lable.AddLabel(LableOther);
+                }
+                else if(type.Equals("lable"))//root下的非other标签
+                {
+                    SceneLable sceneLable = GetLable(treeItem, treeItem.GetText(0), "root");
+                    Lable.AddLabel(sceneLable);
+                }
+                else
+                {
+                    Lable.AddScene(treeItem.GetText(0), path);
+                }
+            }
+            SaveLoadData.parent_lable = Lable;
+            labledata = Lable;
+            GD.Print(Lable);
+            GD.Print("\n");
+        }
+
+        public SceneLable GetLable(TreeItem item, string name, string pr_name)
+        {
+            SceneLable lable = new SceneLable(pr_name + "/" + name, true);
+            for (int j = 0; j < item.GetChildCount(); j++)
+            {
+                TreeItem treeItem = item.GetChild(j);
+                string type = (string)treeItem.GetMetadata(0);
+                string path = (string)treeItem.GetMetadata(1);
+                if (type.Equals("lable"))//标签
+                {
+                    SceneLable sceneLable = GetLable(treeItem, treeItem.GetText(0), "root"+"/"+ item.GetText(0));
+                    lable.AddLabel(sceneLable);
+                }
+                else//场景
+                {
+                    lable.AddScene(treeItem.GetText(0), path);
+                }
+            }
+            return lable;
+        }
+
+
+
 
         /// <summary>
         ///鼠标选中某选项
@@ -349,10 +363,10 @@ func get_items(item:TreeItem) -> Array[TreeItem]:
             {//添加标签
                 AddLable();
             }
-            //else if (id == 1)
-            //{//编辑标签名称
-            //    EditLableName();
-            //}
+            else if (id == 1)
+            {//编辑标签名称
+                EditLableName();
+            }
             else
             {
                 DeleteLable();
@@ -397,7 +411,7 @@ func get_items(item:TreeItem) -> Array[TreeItem]:
         /// <summary>
         ///编辑标签名称
         /// </summary>
-        /*public void EditLableName()
+        public void EditLableName()
         {
             TreeItem treeitem = GetSelected();
             if (treeitem != null)//有选中项
@@ -423,7 +437,7 @@ func get_items(item:TreeItem) -> Array[TreeItem]:
                     }
                 }
             }
-        }*/
+        }
 
         /// <summary>
         ///删除标签
@@ -466,17 +480,17 @@ func get_items(item:TreeItem) -> Array[TreeItem]:
             }
         }
 
-		
-		
-		public void SetTreeItemEdited()
-		{
-			TreeItem treeitem = GetEdited();
-			if (treeitem != null)
+
+
+        public void SetTreeItemEdited()
+        {
+            TreeItem treeitem = GetEdited();
+            if (treeitem != null)
             {
-				string type = (string)treeitem.GetMetadata(0);
+                string type = (string)treeitem.GetMetadata(0);
                 if (type.Equals("lable"))//是标签才能
                 {
-					string value = (string)treeitem.GetMetadata(1);
+                    string value = (string)treeitem.GetMetadata(1);
                     if (!value.Equals("root/other"))
                     {
                         if (!value.Equals("root"))
@@ -492,9 +506,9 @@ func get_items(item:TreeItem) -> Array[TreeItem]:
                     {
                         GD.Print("该标签下存储的是未分类场景，无法修改该标签名字哦！");
                     }
-				}
-			}
-		}
+                }
+            }
+        }
         /// <summary>
         ///修改标签名称
         /// </summary>
@@ -600,7 +614,7 @@ func get_items(item:TreeItem) -> Array[TreeItem]:
             root.SetMetadata(0, "lable");
             root.SetMetadata(1, "root");
             List<SceneLable> lable_list = labledata.lable_list;
-            for (int i = 0; i < lable_list.Count; i++)
+            for (int i = 0; i < lable_list.Count; i++)//主节点下标签
             {
                 TreeItem sceneItem = CreateItem(root);
                 sceneItem.SetEditable(0, true);
@@ -625,12 +639,11 @@ func get_items(item:TreeItem) -> Array[TreeItem]:
             {
                 TreeItem sub_root = CreateItem(parentItem);
                 sub_root.SetEditable(0, true);
-                sub_root.SetText(0, lable_list[i].GetTitleName());//设置标签名称
+                sub_root.SetText(0, lable_list[i].GetTitleName());//设置标签名称 显示名称
                 sub_root.SetIcon(0, ico_list[1]);
                 sub_root.SetIconMaxWidth(0, 16);
                 sub_root.SetMetadata(0, "lable");
-                sub_root.SetMetadata(1, lable_list[i].lable_name);
-                sub_root.SetMetadata(2, lable_list[i].lable_name);
+                sub_root.SetMetadata(1, lable_list[i].lable_name);//标签名称（路径）
                 sub_list.Add(sub_root);
             }
             foreach (var kvp in scene_dict)

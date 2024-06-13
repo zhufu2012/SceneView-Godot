@@ -57,11 +57,11 @@ namespace SceneCore_Space
             now_time += 1;
             if (now_time > MAXTIME)
             {
+                now_time = 0;
                 if (saveLoadData != null)
                 {
                     saveLoadData.SaveData();//保存数据
                 }
-                now_time = 0;
             }
             base._PhysicsProcess(delta);
         }

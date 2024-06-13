@@ -13,7 +13,7 @@ namespace SceneCore_Space
     public class SaveLoadData
     {
         //根节点
-        public SceneLable parent_lable;
+        public static SceneLable parent_lable;
         public string path = "res://addons/SceneView/data.json";
         public SaveLoadData()
         {
@@ -40,6 +40,9 @@ namespace SceneCore_Space
             return parent_lable;
         }
 
+
+
+
         public bool SaveData()
         {
             try
@@ -55,8 +58,8 @@ namespace SceneCore_Space
 
                 //GD.Print("测试保存");
                 //GD.Print(json);
-                //using var file = FileAccess.Open(path, FileAccess.ModeFlags.Write);
-                //file.StoreString(json);
+                using var file = FileAccess.Open(path, FileAccess.ModeFlags.Write);
+                file.StoreString(json);
 
                 return true;
             }
