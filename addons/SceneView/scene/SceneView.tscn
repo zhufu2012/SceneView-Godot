@@ -8,7 +8,6 @@ anchor_bottom = 1.0
 offset_right = -704.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 3
 
 [node name="PopupMenu" type="PopupMenu" parent="."]
 process_mode = 3

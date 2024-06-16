@@ -1,9 +1,5 @@
 #if TOOLS
 using Godot;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 
 namespace SceneCore_Space
@@ -16,8 +12,6 @@ namespace SceneCore_Space
         private Control TreePanel;//主节目
         private SceneTree tree;//树
         private PopupMenu popupMenu;//菜单
-        //维护json文件
-        SaveLoadData saveLoadData = null;
         //场景树
         public SceneLable labledata;
         public override void _EnterTree()
@@ -40,14 +34,13 @@ namespace SceneCore_Space
 
         public override void _ExitTree()
         {
-            if (OS.HasFeature("debug") && MainPanelInstance != null)
+            if (OS.HasFeature("debug"))
             {
-                RemoveControlFromDocks(MainPanelInstance);
-                MainPanelInstance.Free();
-            }
-            if (saveLoadData != null)
-            {
-                saveLoadData.SaveData();
+                if (MainPanelInstance != null)
+                {
+                    RemoveControlFromDocks(MainPanelInstance);
+                    MainPanelInstance.Free();
+                }
             }
         }
 
@@ -58,6 +51,8 @@ namespace SceneCore_Space
         {
             tree.IniView(true);
         }
+
+
     }
 
 }

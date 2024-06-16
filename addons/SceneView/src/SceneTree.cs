@@ -1,10 +1,7 @@
 ﻿using Godot;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection.Emit;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace SceneCore_Space
 {
@@ -14,33 +11,32 @@ namespace SceneCore_Space
         private PopupMenu popupMenu;//菜单
         public SceneLable labledata;
         private Control MainPanelInstance;//主节目
-		//维护json文件
+                                          //维护json文件
         SaveLoadData saveLoadData = null;
-		List<Texture2D> ico_list = new List<Texture2D>();
-		
-		public int MAXTIME = 120;//最大保存间隔 120帧
+        List<Texture2D> ico_list = new List<Texture2D>();
+
+        public int MAXTIME = 10;//最大保存间隔 10帧
         //保存间隔
         int SaveTime = 0;
-		
-		///初始化加载图片
-		public void InitIco()
-		{
-			ico_list.Add(GD.Load<Texture2D>("res://addons/SceneView/img/主场景.png"));
-			ico_list.Add(GD.Load<Texture2D>("res://addons/SceneView/img/标签.png"));
-			ico_list.Add(GD.Load<Texture2D>("res://addons/SceneView/img/场景.png"));
-		}
-		
+
+        ///初始化加载图片
+        public void InitIco()
+        {
+            ico_list.Add(GD.Load<Texture2D>("res://addons/SceneView/img/主场景.png"));
+            ico_list.Add(GD.Load<Texture2D>("res://addons/SceneView/img/标签.png"));
+            ico_list.Add(GD.Load<Texture2D>("res://addons/SceneView/img/场景.png"));
+        }
+
         public SceneTree()
         { }
-		
-		
-		
+
+
+
         public SceneTree(PopupMenu popupMenu)
         {
-			InitIco();
-			saveLoadData = new SaveLoadData();
-			labledata = saveLoadData.GetSceneLabelList();
-			
+            InitIco();
+            saveLoadData = new SaveLoadData();
+            labledata = saveLoadData.GetSceneLabelList();
             Columns = 2;
             AllowSearch = true;
             AllowRmbSelect = true;
@@ -72,6 +68,11 @@ namespace SceneCore_Space
                 SaveData();
             }
             base._PhysicsProcess(delta);
+        }
+
+        public override void _ExitTree()
+        {
+            SaveData();
         }
 
         //获取拖动预览
@@ -267,7 +268,26 @@ namespace SceneCore_Space
             }
         }
 
-		
+
+        /// <summary>
+        /// 打开某个场景
+        /// </summary>
+        public bool OpenScene(string path)
+        {
+            EditorInterface face = EditorInterface.Singleton;
+            string[] strarr = face.GetOpenScenes();
+
+            for (int i = 0; i < strarr.Length; i++)
+            {
+                GD.Print(ProjectSettings.GlobalizePath(strarr[i]));
+                GD.Print(path.Replace("\\", "/"));
+                if (ProjectSettings.GlobalizePath(strarr[i]).Equals(path.Replace("\\", "/")))
+                    return false;
+            }
+            face.OpenSceneFromPath(path);
+            return true;
+        }
+
         public void SaveData()
         {
             SceneLable Lable = new SceneLable();
@@ -278,9 +298,9 @@ namespace SceneCore_Space
                 TreeItem treeItem = array[i];//root下的子节点
                 string type = (string)treeItem.GetMetadata(0);
                 string path = (string)treeItem.GetMetadata(1);
-                if (type.Equals("lable") && path.Equals("root/other"))//other标签下
+                if (type.Equals("lable") && path.Equals("root/other"))//other标签
                 {
-                    SceneLable LableOther = new SceneLable("root/other",true);//other标签
+                    SceneLable LableOther = new SceneLable("root/other", true);//other标签
                     LableOther.parent_lable_name = "root";
                     for (int j = 0; j < treeItem.GetChildCount(); j++)
                     {
@@ -289,7 +309,7 @@ namespace SceneCore_Space
                     }
                     Lable.AddLabel(LableOther);
                 }
-                else if(type.Equals("lable"))//root下的非other标签
+                else if (type.Equals("lable"))//root下的非other标签
                 {
                     SceneLable sceneLable = GetLable(treeItem, treeItem.GetText(0), "root");
                     Lable.AddLabel(sceneLable);
@@ -299,12 +319,13 @@ namespace SceneCore_Space
                     Lable.AddScene(treeItem.GetText(0), path);
                 }
             }
-			labledata = Lable;
+            labledata = Lable;
             SaveLoadData.parent_lable = Lable;
-            saveLoadData.SaveData();//保存数据
+            if (saveLoadData != null)
+                saveLoadData.SaveData();//保存数据
         }
-		
-		//获取子节点的SceneLable数据
+
+        //获取子节点的SceneLable数据
         public SceneLable GetLable(TreeItem item, string name, string pr_name)
         {
             SceneLable lable = new SceneLable(pr_name + "/" + name, true);
@@ -315,7 +336,13 @@ namespace SceneCore_Space
                 string path = (string)treeItem.GetMetadata(1);
                 if (type.Equals("lable"))//标签
                 {
-                    SceneLable sceneLable = GetLable(treeItem, treeItem.GetText(0), "root"+"/"+ item.GetText(0));
+                    //GD.Print("\n");
+                    //GD.Print(pr_name);
+                    //GD.Print(name);
+                    //GD.Print(item.GetText(0));
+                    //GD.Print("\n");
+                    SceneLable sceneLable = GetLable(treeItem, treeItem.GetText(0), pr_name + "/"  + item.GetText(0));
+                    
                     lable.AddLabel(sceneLable);
                 }
                 else//场景
@@ -351,16 +378,11 @@ namespace SceneCore_Space
                 if (treeitem != null)
                 {
                     string type = (string)treeitem.GetMetadata(0);
-                    if (type.Equals("scene"))
+                    if (type.Equals("lable"))//标签
                     {
-                        //GD.Print("是场景");
+                        popupMenu.Position = new Vector2I((int)position.X + 14, (int)(position.Y) + 100);
+                        popupMenu.Show();
                     }
-                    else if (type.Equals("lable"))
-                    {
-                        //GD.Print("是标签");
-                    }
-                    popupMenu.Position = new Vector2I((int)position.X + 14, (int)(position.Y) + 100);
-                    popupMenu.Show();
                 }
             }
             else
@@ -404,7 +426,8 @@ namespace SceneCore_Space
                         SceneLable scenelable = labledata.QueryLable(list_able, value);//查询对应标签
                         if (scenelable != null)//文件数据中存在该标签
                         {
-                            scenelable.AddLabel2(new SceneLable(value + "/未命名标签", true));//给标签下，加一个未命名标签
+                            SceneLable new_lable = new SceneLable(value + "/未命名标签", true);
+                            scenelable.AddLabel2(new_lable);//给标签下，加一个未命名标签
                             labledata.Updata(scenelable);//更新主标签 祝福注释
                             IniView(true);//更新界面
                         }
@@ -499,32 +522,20 @@ namespace SceneCore_Space
         /// </summary>
         public void SetTreeItemEdited()
         {
-            TreeItem treeitem = GetEdited();
+            TreeItem treeitem = GetSelected();//当前选中
+            GD.Print(treeitem);
             if (treeitem != null)
             {
                 string type = (string)treeitem.GetMetadata(0);
-                if (type.Equals("lable"))//是标签才能
+                GD.Print(type);
+                if (type.Equals("scene"))//是标签才能
                 {
                     string value = (string)treeitem.GetMetadata(1);
-                    if (!value.Equals("root/other"))
-                    {
-                        if (!value.Equals("root"))
-                        {
-                            EditSelected(true);
-                        }
-                        else
-                        {
-                            GD.Print("该标签是根标签，无法修改！");
-                        }
-                    }
-                    else
-                    {
-                        GD.Print("该标签下存储的是未分类场景，无法修改该标签名字哦！");
-                    }
+                    OpenScene(value);
                 }
             }
         }
-		
+
         /// <summary>
         ///修改标签名称
         /// </summary>
@@ -538,8 +549,12 @@ namespace SceneCore_Space
                 SceneLable scenelable = labledata.QueryLable(list_able, value);//查询对应标签
                 if (scenelable != null)//文件数据中存在该标签
                 {
+
                     scenelable.lable_name = scenelable.parent_lable_name + "/" + treeitem.GetText(0);//新名称
-                    labledata.Updata2(scenelable);//更新主标签
+                    GD.Print("修改的：" + treeitem.GetText(0));
+                    GD.Print("修改的：" + scenelable);
+                    //labledata.Updata2(scenelable);//更新主标签
+                    GD.Print("修改的：" + labledata.Updata2(scenelable));
                     IniView(true);//更新界面
                 }
                 else
@@ -571,15 +586,27 @@ namespace SceneCore_Space
         {
             //标签名称（真实名称），标签下有哪些场景
             Dictionary<string, Dictionary<string, string>> scene_dict_all = labledata.GetSceneDictAll();//json文件中记录的所有场景
-            Dictionary<string, string> scene_dict = labledata.GetSceneDictAll2(scene_dict_all);//统一为一个场景字典,<名称，路径>
+            Dictionary<string, string> scene_dict = labledata.GetSceneDictAll2(scene_dict_all);//json文件中记录,统一为一个场景字典,<名称，路径>
             Dictionary<string, string> sceneFiles = GetRenameFiles();     //当前项目的所有场景，所有场景必然不同名,路径也必然不同
             List<SceneLable> scene_list_all = labledata.GetAllSceneLabel(); //当前文件中保存的所有场景
             SceneLable other_lable = labledata.QueryLable(scene_list_all, "root/other");//其他分类标签
-            foreach (var scene in sceneFiles)//遍历项目所有场景-检查是否已有当前场景
+
+            GD.Print("文件里面的\n");
+            foreach (var k in sceneFiles)
             {
-                if (scene_dict.ContainsValue(scene.Value))//检查json中所有场景中，是否已经有了该场景数据，
+                GD.Print(k.Key + "   " + k.Value);
+            }
+            GD.Print("json里面的\n");
+            foreach (var k in scene_dict)
+            {
+                GD.Print(k.Key + "   " + k.Value);
+            }
+
+            foreach (var scene in scene_dict)//遍历项目所有场景-检查是否已有当前场景
+            {
+                if (sceneFiles.ContainsValue(scene.Value))//检查json中所有场景中，是否已经有了该场景数据，
                 {//存在相同路径（路径相同名称也一定相同）的场景，就不管
-                    
+
                 }
                 else
                 {

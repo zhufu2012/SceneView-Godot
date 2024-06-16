@@ -1,7 +1,6 @@
 using Godot;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
 
 
 namespace SceneCore_Space
@@ -132,8 +131,10 @@ namespace SceneCore_Space
             // 在子标签列表中查找并更新对应子标签
             for (int i = 0; i < lable_list.Count; i++)
             {
-                if (lable.lable_name.Equals(lable_list[i].lable_name))
+                if (lable.lable_name.Equals(lable_list[i].lable_name))//如果是子标签就直接成功
                 {
+                    lable.lable_name = parent_lable_name + "/" + lable.GetTitleName(); ;//标签的父标签设置
+                    lable.parent_lable_name = parent_lable_name;//标签的父标签设置
                     lable_list[i] = lable; // 替换子标签为传入的标签
                     return true;
                 }
@@ -143,7 +144,6 @@ namespace SceneCore_Space
                     return true;
                 }
             }
-
             return false; // 没有找到对应标签，更新失败
         }
 
@@ -462,7 +462,7 @@ namespace SceneCore_Space
             }
 
             string all = "lable_name:" + lable_name + ",parent_lable_name:" + parent_lable_name +
-                 ",[" + lable_list_str + "],\n\tscene_list:" + dict_list+"]";
+                 ",[" + lable_list_str + "],\n\tscene_list:" + dict_list + "]";
 
             return all;
         }
