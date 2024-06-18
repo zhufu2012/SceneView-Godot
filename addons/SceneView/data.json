@@ -20,19 +20,17 @@
         "dict_name": {
           "$id": "6",
           "$values": [
-            "cs.tscn",
             "SceneTree.tscn",
             "SceneView.tscn",
-            "阿三大苏打.tscn"
+            "cs.tscn"
           ]
         },
         "dict_path": {
           "$id": "7",
           "$values": [
-            "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\cs.tscn",
             "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\SceneTree.tscn",
             "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\SceneView.tscn",
-            "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\阿三大苏打.tscn"
+            "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\cs.tscn"
           ]
         },
         "lable_list": {
@@ -42,63 +40,495 @@
       },
       {
         "$id": "9",
-        "lable_name": "root/未命名标签",
+        "lable_name": "root/1",
         "parent_lable_name": "root",
         "dict_name": {
           "$id": "10",
-          "$values": [
-            "asdasda.tscn"
-          ]
+          "$values": []
         },
         "dict_path": {
           "$id": "11",
-          "$values": [
-            "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\src\\asdasda.tscn"
-          ]
+          "$values": []
         },
         "lable_list": {
           "$id": "12",
           "$values": [
             {
               "$id": "13",
-              "lable_name": "root/未命名标签/阿松大",
-              "parent_lable_name": "root/未命名标签",
+              "lable_name": "root/1/2",
+              "parent_lable_name": "root/1",
               "dict_name": {
                 "$id": "14",
-                "$values": [
-                  "SceneView.tscn",
-                  "SceneTree.tscn"
-                ]
+                "$values": []
               },
               "dict_path": {
                 "$id": "15",
-                "$values": [
-                  "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\SceneView.tscn",
-                  "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\SceneTree.tscn"
-                ]
+                "$values": []
               },
               "lable_list": {
                 "$id": "16",
                 "$values": [
                   {
                     "$id": "17",
-                    "lable_name": "root/未命名标签/阿松大/阿松大3",
-                    "parent_lable_name": "root/未命名标签/阿松大",
+                    "lable_name": "root/1/2/3",
+                    "parent_lable_name": "root/1/2",
                     "dict_name": {
                       "$id": "18",
-                      "$values": [
-                        "cs.tscn"
-                      ]
+                      "$values": []
                     },
                     "dict_path": {
                       "$id": "19",
-                      "$values": [
-                        "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\cs.tscn"
-                      ]
+                      "$values": []
                     },
                     "lable_list": {
                       "$id": "20",
-                      "$values": []
+                      "$values": [
+                        {
+                          "$id": "21",
+                          "lable_name": "root/1/2/3/4",
+                          "parent_lable_name": "root/1/2/3",
+                          "dict_name": {
+                            "$id": "22",
+                            "$values": []
+                          },
+                          "dict_path": {
+                            "$id": "23",
+                            "$values": []
+                          },
+                          "lable_list": {
+                            "$id": "24",
+                            "$values": [
+                              {
+                                "$id": "25",
+                                "lable_name": "root/1/2/3/4/5",
+                                "parent_lable_name": "root/1/2/3/4",
+                                "dict_name": {
+                                  "$id": "26",
+                                  "$values": [
+                                    "阿三大苏打.tscn"
+                                  ]
+                                },
+                                "dict_path": {
+                                  "$id": "27",
+                                  "$values": [
+                                    "D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\阿三大苏打.tscn"
+                                  ]
+                                },
+                                "lable_list": {
+                                  "$id": "28",
+                                  "$values": [
+                                    {
+                                      "$id": "29",
+                                      "lable_name": "root/1/2/3/4/5/6",
+                                      "parent_lable_name": "root/1/2/3/4/5",
+                                      "dict_name": {
+                                        "$id": "30",
+                                        "$values": []
+                                      },
+                                      "dict_path": {
+                                        "$id": "31",
+                                        "$values": []
+                                      },
+                                      "lable_list": {
+                                        "$id": "32",
+                                        "$values": [
+                                          {
+                                            "$id": "33",
+                                            "lable_name": "root/1/2/3/4/5/6/7",
+                                            "parent_lable_name": "root/1/2/3/4/5/6",
+                                            "dict_name": {
+                                              "$id": "34",
+                                              "$values": []
+                                            },
+                                            "dict_path": {
+                                              "$id": "35",
+                                              "$values": []
+                                            },
+                                            "lable_list": {
+                                              "$id": "36",
+                                              "$values": [
+                                                {
+                                                  "$id": "37",
+                                                  "lable_name": "root/1/2/3/4/5/6/7/8",
+                                                  "parent_lable_name": "root/1/2/3/4/5/6/7",
+                                                  "dict_name": {
+                                                    "$id": "38",
+                                                    "$values": []
+                                                  },
+                                                  "dict_path": {
+                                                    "$id": "39",
+                                                    "$values": []
+                                                  },
+                                                  "lable_list": {
+                                                    "$id": "40",
+                                                    "$values": [
+                                                      {
+                                                        "$id": "41",
+                                                        "lable_name": "root/1/2/3/4/5/6/7/8/9",
+                                                        "parent_lable_name": "root/1/2/3/4/5/6/7/8",
+                                                        "dict_name": {
+                                                          "$id": "42",
+                                                          "$values": []
+                                                        },
+                                                        "dict_path": {
+                                                          "$id": "43",
+                                                          "$values": []
+                                                        },
+                                                        "lable_list": {
+                                                          "$id": "44",
+                                                          "$values": [
+                                                            {
+                                                              "$id": "45",
+                                                              "lable_name": "root/1/2/3/4/5/6/7/8/9/10",
+                                                              "parent_lable_name": "root/1/2/3/4/5/6/7/8/9",
+                                                              "dict_name": {
+                                                                "$id": "46",
+                                                                "$values": []
+                                                              },
+                                                              "dict_path": {
+                                                                "$id": "47",
+                                                                "$values": []
+                                                              },
+                                                              "lable_list": {
+                                                                "$id": "48",
+                                                                "$values": []
+                                                              }
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "$id": "49",
+                                            "lable_name": "root/1/2/3/4/5/6/71",
+                                            "parent_lable_name": "root/1/2/3/4/5/6",
+                                            "dict_name": {
+                                              "$id": "50",
+                                              "$values": []
+                                            },
+                                            "dict_path": {
+                                              "$id": "51",
+                                              "$values": []
+                                            },
+                                            "lable_list": {
+                                              "$id": "52",
+                                              "$values": [
+                                                {
+                                                  "$id": "53",
+                                                  "lable_name": "root/1/2/3/4/5/6/71/81",
+                                                  "parent_lable_name": "root/1/2/3/4/5/6/71",
+                                                  "dict_name": {
+                                                    "$id": "54",
+                                                    "$values": []
+                                                  },
+                                                  "dict_path": {
+                                                    "$id": "55",
+                                                    "$values": []
+                                                  },
+                                                  "lable_list": {
+                                                    "$id": "56",
+                                                    "$values": [
+                                                      {
+                                                        "$id": "57",
+                                                        "lable_name": "root/1/2/3/4/5/6/71/81/91",
+                                                        "parent_lable_name": "root/1/2/3/4/5/6/71/81",
+                                                        "dict_name": {
+                                                          "$id": "58",
+                                                          "$values": []
+                                                        },
+                                                        "dict_path": {
+                                                          "$id": "59",
+                                                          "$values": []
+                                                        },
+                                                        "lable_list": {
+                                                          "$id": "60",
+                                                          "$values": [
+                                                            {
+                                                              "$id": "61",
+                                                              "lable_name": "root/1/2/3/4/5/6/71/81/91/101",
+                                                              "parent_lable_name": "root/1/2/3/4/5/6/71/81/91",
+                                                              "dict_name": {
+                                                                "$id": "62",
+                                                                "$values": []
+                                                              },
+                                                              "dict_path": {
+                                                                "$id": "63",
+                                                                "$values": []
+                                                              },
+                                                              "lable_list": {
+                                                                "$id": "64",
+                                                                "$values": [
+                                                                  {
+                                                                    "$id": "65",
+                                                                    "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111",
+                                                                    "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101",
+                                                                    "dict_name": {
+                                                                      "$id": "66",
+                                                                      "$values": []
+                                                                    },
+                                                                    "dict_path": {
+                                                                      "$id": "67",
+                                                                      "$values": []
+                                                                    },
+                                                                    "lable_list": {
+                                                                      "$id": "68",
+                                                                      "$values": [
+                                                                        {
+                                                                          "$id": "69",
+                                                                          "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121",
+                                                                          "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101/111",
+                                                                          "dict_name": {
+                                                                            "$id": "70",
+                                                                            "$values": []
+                                                                          },
+                                                                          "dict_path": {
+                                                                            "$id": "71",
+                                                                            "$values": []
+                                                                          },
+                                                                          "lable_list": {
+                                                                            "$id": "72",
+                                                                            "$values": [
+                                                                              {
+                                                                                "$id": "73",
+                                                                                "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131",
+                                                                                "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121",
+                                                                                "dict_name": {
+                                                                                  "$id": "74",
+                                                                                  "$values": []
+                                                                                },
+                                                                                "dict_path": {
+                                                                                  "$id": "75",
+                                                                                  "$values": []
+                                                                                },
+                                                                                "lable_list": {
+                                                                                  "$id": "76",
+                                                                                  "$values": [
+                                                                                    {
+                                                                                      "$id": "77",
+                                                                                      "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/141",
+                                                                                      "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131",
+                                                                                      "dict_name": {
+                                                                                        "$id": "78",
+                                                                                        "$values": []
+                                                                                      },
+                                                                                      "dict_path": {
+                                                                                        "$id": "79",
+                                                                                        "$values": []
+                                                                                      },
+                                                                                      "lable_list": {
+                                                                                        "$id": "80",
+                                                                                        "$values": [
+                                                                                          {
+                                                                                            "$id": "81",
+                                                                                            "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/141/151",
+                                                                                            "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/141",
+                                                                                            "dict_name": {
+                                                                                              "$id": "82",
+                                                                                              "$values": []
+                                                                                            },
+                                                                                            "dict_path": {
+                                                                                              "$id": "83",
+                                                                                              "$values": []
+                                                                                            },
+                                                                                            "lable_list": {
+                                                                                              "$id": "84",
+                                                                                              "$values": [
+                                                                                                {
+                                                                                                  "$id": "85",
+                                                                                                  "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/141/151/161",
+                                                                                                  "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/141/151",
+                                                                                                  "dict_name": {
+                                                                                                    "$id": "86",
+                                                                                                    "$values": []
+                                                                                                  },
+                                                                                                  "dict_path": {
+                                                                                                    "$id": "87",
+                                                                                                    "$values": []
+                                                                                                  },
+                                                                                                  "lable_list": {
+                                                                                                    "$id": "88",
+                                                                                                    "$values": [
+                                                                                                      {
+                                                                                                        "$id": "89",
+                                                                                                        "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/141/151/161/未命名标签",
+                                                                                                        "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/141/151/161",
+                                                                                                        "dict_name": {
+                                                                                                          "$id": "90",
+                                                                                                          "$values": []
+                                                                                                        },
+                                                                                                        "dict_path": {
+                                                                                                          "$id": "91",
+                                                                                                          "$values": []
+                                                                                                        },
+                                                                                                        "lable_list": {
+                                                                                                          "$id": "92",
+                                                                                                          "$values": []
+                                                                                                        }
+                                                                                                      },
+                                                                                                      {
+                                                                                                        "$id": "93",
+                                                                                                        "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/141/151/161/未命名标签0",
+                                                                                                        "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/141/151/161",
+                                                                                                        "dict_name": {
+                                                                                                          "$id": "94",
+                                                                                                          "$values": []
+                                                                                                        },
+                                                                                                        "dict_path": {
+                                                                                                          "$id": "95",
+                                                                                                          "$values": []
+                                                                                                        },
+                                                                                                        "lable_list": {
+                                                                                                          "$id": "96",
+                                                                                                          "$values": []
+                                                                                                        }
+                                                                                                      }
+                                                                                                    ]
+                                                                                                  }
+                                                                                                }
+                                                                                              ]
+                                                                                            }
+                                                                                          }
+                                                                                        ]
+                                                                                      }
+                                                                                    },
+                                                                                    {
+                                                                                      "$id": "97",
+                                                                                      "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131/未命名标签0",
+                                                                                      "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/121/131",
+                                                                                      "dict_name": {
+                                                                                        "$id": "98",
+                                                                                        "$values": []
+                                                                                      },
+                                                                                      "dict_path": {
+                                                                                        "$id": "99",
+                                                                                        "$values": []
+                                                                                      },
+                                                                                      "lable_list": {
+                                                                                        "$id": "100",
+                                                                                        "$values": []
+                                                                                      }
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        },
+                                                                        {
+                                                                          "$id": "101",
+                                                                          "lable_name": "root/1/2/3/4/5/6/71/81/91/101/111/未命名标签0",
+                                                                          "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101/111",
+                                                                          "dict_name": {
+                                                                            "$id": "102",
+                                                                            "$values": []
+                                                                          },
+                                                                          "dict_path": {
+                                                                            "$id": "103",
+                                                                            "$values": []
+                                                                          },
+                                                                          "lable_list": {
+                                                                            "$id": "104",
+                                                                            "$values": []
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "$id": "105",
+                                                                    "lable_name": "root/1/2/3/4/5/6/71/81/91/101/未命名标签0",
+                                                                    "parent_lable_name": "root/1/2/3/4/5/6/71/81/91/101",
+                                                                    "dict_name": {
+                                                                      "$id": "106",
+                                                                      "$values": []
+                                                                    },
+                                                                    "dict_path": {
+                                                                      "$id": "107",
+                                                                      "$values": []
+                                                                    },
+                                                                    "lable_list": {
+                                                                      "$id": "108",
+                                                                      "$values": []
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "$id": "109",
+                                                        "lable_name": "root/1/2/3/4/5/6/71/81/未命名标签0",
+                                                        "parent_lable_name": "root/1/2/3/4/5/6/71/81",
+                                                        "dict_name": {
+                                                          "$id": "110",
+                                                          "$values": []
+                                                        },
+                                                        "dict_path": {
+                                                          "$id": "111",
+                                                          "$values": []
+                                                        },
+                                                        "lable_list": {
+                                                          "$id": "112",
+                                                          "$values": []
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "$id": "113",
+                                                  "lable_name": "root/1/2/3/4/5/6/71/未命名标签0",
+                                                  "parent_lable_name": "root/1/2/3/4/5/6/71",
+                                                  "dict_name": {
+                                                    "$id": "114",
+                                                    "$values": []
+                                                  },
+                                                  "dict_path": {
+                                                    "$id": "115",
+                                                    "$values": []
+                                                  },
+                                                  "lable_list": {
+                                                    "$id": "116",
+                                                    "$values": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "$id": "117",
+                                      "lable_name": "root/1/2/3/4/5/未命名标签0",
+                                      "parent_lable_name": "root/1/2/3/4/5",
+                                      "dict_name": {
+                                        "$id": "118",
+                                        "$values": []
+                                      },
+                                      "dict_path": {
+                                        "$id": "119",
+                                        "$values": []
+                                      },
+                                      "lable_list": {
+                                        "$id": "120",
+                                        "$values": []
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     }
                   }
                 ]

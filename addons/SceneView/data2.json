@@ -21,14 +21,18 @@
 		  "$id": "6",
 		  "$values": [
 			"SceneTree.tscn",
-			"SceneView.tscn"
+			"SceneView.tscn",
+			"cs.tscn",
+			"阿三大苏打.tscn"
 		  ]
 		},
 		"dict_path": {
 		  "$id": "7",
 		  "$values": [
 			"D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\SceneTree.tscn",
-			"D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\SceneView.tscn"
+			"D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\SceneView.tscn",
+			"D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\cs.tscn",
+			"D:/Godot4/student/my addons/SceneView/addons\\SceneView\\scene\\阿三大苏打.tscn"
 		  ]
 		},
 		"lable_list": {
